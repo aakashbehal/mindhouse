@@ -1,17 +1,21 @@
 const gulp = require('gulp');
 const sass = require('gulp-sass');
-const livereload = require('gulp-livereload');
-
-sass.compiler = require('node-sass');
+const connect = require('gulp-connect');
 
 gulp.task('sass', function () {
   return gulp.src('./styles/**/*.sass')
     .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
-    .pipe(gulp.dest('./styles/css'));
+    .pipe(gulp.dest('./styles/css'))
+    .pipe(connect.reload());
 });
 
+gulp.task('connect', function() {
+  connect.server({
+    livereload: true
+  })
+})
+
 gulp.task('watch', function() {
-  livereload.listen();
   gulp.watch('./styles/**/*.sass', gulp.series('sass'));
 })
 
